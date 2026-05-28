@@ -1,0 +1,31 @@
+name: Update README
+
+on:
+  schedule:
+    # 每天 UTC 00:00 更新（北京时间 08:00）
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # 允许手动触发
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update Stats
+        run: |
+          echo "📊 GitHub Stats updated at $(date -u '+%Y-%m-%d %H:%M UTC')" >> .stats-update.log
+          
+      - name: Commit and Push
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          git diff --staged --quiet || git commit -m "📊 Auto update: GitHub stats $(date -u '+%Y-%m-%d')"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
