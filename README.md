@@ -120,10 +120,4 @@
 
 </div>
 
----
 
-<div align="center">
-
-*此 Profile 由 GitHub Actions 自动更新*
-
-</div>
